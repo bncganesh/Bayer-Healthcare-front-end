@@ -1,25 +1,43 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import "./Dashboard.css";
+import Sidebar from "../Sidebar/Sidebar";
 
 const Dashboard = () => {
+  const [username, setUsername] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Retrieve username from cache
+    const storedUser = localStorage.getItem("loggedInUser");
+    if (storedUser) {
+      setUsername(storedUser);
+    } else {
+      navigate('/'); // Redirect to Home if not logged in
+    }
+  }, [navigate]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("loggedInUser"); // Clear cache
+    sessionStorage.clear(); // Additional cache clearing (optional)
+
+    navigate('/', { replace: true }); // Redirect to Home
+
+    // Prevent navigating back to the dashboard
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+      navigate('/', { replace: true });
+    };
+  };
+
   return (
     <div className="dashboard-container">
       {/* Sidebar */}
-      <aside className="sidebar">
-        <h2>Bayer Health</h2>
-        <ul>
-          <li><Link to="/dashboard">Dashboard</Link></li>
-          <li><Link to="/profile">My Profile</Link></li>
-          <li><Link to="#">Health Metrics</Link></li>
-          <li><Link to="#">Messages</Link></li>
-          <li><Link to="#">Logout</Link></li>
-        </ul>
-      </aside>
+      <Sidebar />
 
       {/* Main Content */}
       <main className="content">
-        <h1>Welcome, Ganesh!</h1>
+        <h1>Welcome, {username ? username : "Guest"}!</h1>
 
         {/* Health Metrics Section */}
         <section className="metrics">

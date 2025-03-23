@@ -11,6 +11,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import Profile from './components/Profile/Profile';
+import HealthMetrics from './components/HealthMetrics/HealthMetrics';
+import Messages from './components/Messages/Messages';
 
 function App() {
   return (<>
@@ -26,6 +28,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/healthmetrics" element={<HealthMetrics />} />
+        <Route path="/messages" element={<Messages />} />
       </Routes>
     </Router>
 

@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "./Auth.css"; // Styles to match homepage
 
 const mockUsers = [
-  { email: "user@example.com", password: "password123" },
-  { email: "admin@example.com", password: "adminpass" },
+  { email: "user@example.com", name:"user", password: "password123" },
+  { email: "admin@example.com", name:"admin", password: "adminpass" },
 ];
 
 const Login = () => {
@@ -37,7 +37,10 @@ const Login = () => {
     e.preventDefault();
     if (!formErrors.email && !formErrors.password && email && password) {
       const user = mockUsers.find((u) => u.email === email && u.password === password);
-      if (user) navigate("/dashboard");
+      if (user) {
+        localStorage.setItem("loggedInUser", user.name); 
+        navigate("/dashboard");
+      }
       else setFormErrors({ ...formErrors, general: "Invalid email or password" });
     }
   };
